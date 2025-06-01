@@ -12,7 +12,7 @@ class Candidate(models.Model):
     age = models.IntegerField()
     gender = models.CharField(choices=GENDER_CHOICES, max_length=1, blank=True, null=True)
     email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=10)
+    phone_number = models.CharField(max_length=10, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
