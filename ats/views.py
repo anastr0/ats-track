@@ -20,7 +20,7 @@ class CandidateViewSet(ModelViewSet):
     @action(detail=False, methods=["POST"], name="Search Candidate")
     def search(self, request, *args, **kwargs):
         # validate request has input 'name'
-        if not request.data.get("name", None):
+        if not request.data.get("name"):
             return Response({"error": "Name is required"}, status=400)
 
         # perform search
