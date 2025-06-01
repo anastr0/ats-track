@@ -1,5 +1,5 @@
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAdminUser
+# from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -10,7 +10,7 @@ from .serializers import CandidateSerializer
 class CandidateViewSet(ModelViewSet):
     queryset = Candidate.objects.all()
     serializer_class = CandidateSerializer
-    permission_classes = [IsAdminUser]
+    # permission_classes = [IsAdminUser]  # to uncomment in production setting
 
     def update(self, request, *args, **kwargs):
         # partial update by default
