@@ -22,6 +22,7 @@ class Candidate(models.Model):
     class Meta:
         ordering = ["-created_at"]
 
+    @classmethod
     def search_name(self, name_query):
         # build search query with input name keyword terms
         vector = SearchVector("name")
