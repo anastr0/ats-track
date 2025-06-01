@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 
 
 class Candidate(models.Model):
@@ -19,4 +20,19 @@ class Candidate(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
+
+    def search_name(self, name_query):
+        # build search query with input name keyword terms
+        vector = SearchVector("name")
+        query = SearchQuery(" | ".join(name_query.split(" ")), search_type="raw")
+
+        # sort by how often terms appear, how close together terms are
+        rank = SearchRank(vector, query)
+        search_results = (
+            Candidate.objects.annotate(search=vector, rank=rank)
+            .filter(search=query)
+            .order_by("-rank")
+        )
+
+        return search_results
