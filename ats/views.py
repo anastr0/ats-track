@@ -28,7 +28,7 @@ class CandidateViewSet(ModelViewSet):
 
         # if no results, return 404
         if search_results.count() == 0:
-            return Response({"error": "No results found"}, status=404)
+            return Response({"info": "No candidates found"}, status=204)
 
         serializer = self.get_serializer(search_results, many=True)
         return Response(serializer.data, status=200)
