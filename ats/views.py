@@ -9,6 +9,10 @@ class CandidateViewSet(ModelViewSet):
     queryset = Candidate.objects.all()
     serializer_class = CandidateSerializer
 
+    def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return super().update(request, *args, **kwargs)
+
     @action(detail=False, methods=['POST'], name='Search Candidate')
     def search(self, request, *args, **kwargs):
         search_results = Candidate.objects.filter(name__icontains=request.data['name'])
