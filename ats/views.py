@@ -1,16 +1,16 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-# DONE : Create a table called Candidate with columns: [Name, Age, Gender, Email, Phone number]
-# TODO : Create api endpoints to: create, update and delete a candidate. 
-# TODO : Also create an api endpoint to Search candidates (Explained in detail below). Searching should work on candidates name and should return results sorted based on relevancy. Relevancy is defined as the number of words in the search query that can be found in candidates name.
+from rest_framework.decorators import action
+from rest_framework.viewsets import ModelViewSet
+from .models import Candidate
+from .serializers import CandidateSerializer
 
-# Create your views here.
-@api_view(['GET'])
-def getData(request):
-    return Response()
+class CandidateViewSet(ModelViewSet):
+    queryset = Candidate.objects.all()
+    serializer_class = CandidateSerializer
 
-
-@api_view(['POST'])
-def postData(request):
-    return Response()
+    @action(detail=False, methods=['POST'], name='Search Candidate')
+    def search(self, request, *args, **kwargs):
+        search_results = Candidate.objects.filter(name__icontains=request.data['name'])
+        serializer = self.get_serializer(search_results, many=True)
+        return Response(serializer.data, status=200)
